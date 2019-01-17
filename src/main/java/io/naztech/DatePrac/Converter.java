@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,11 +23,11 @@ public class Converter {
 	public static Date FromLocaldateToDate(LocalDate localDate) {
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
-	
+
 	public static LocalTime FromDateToLocalTime(Date date) {
-	    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
 	}
-	
+
 	public static LocalDateTime FromDateToLocalDateTime(Date date) {
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
@@ -35,12 +36,6 @@ public class Converter {
 		TimeZone tz = cal.getTimeZone();
 		ZoneId zid = tz == null ? ZoneId.systemDefault() : tz.toZoneId();
 		return LocalDateTime.ofInstant(cal.toInstant(), zid);
-	}
-
-	public static Calendar fromDateToCalendarDate(Date date) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		return cal;
 	}
 
 	// calendar to date
@@ -82,25 +77,11 @@ public class Converter {
 		return zonedDateTime;
 	}
 
-//	public static OffsetDateTime FromCalendarToOffsetDateTime(Calendar c) 
-//	{
-//		ZoneId zoneid = ZoneId.of("Asia/Tokyo");
-//		OffsetDateTime offsetDateTime = OffsetDateTime.of
-//		return offsetDateTime;
-//	}
-
-	public static void main(String[] args) throws ParseException {
-		Calendar cl = Calendar.getInstance();
-		System.out.println(cl.getTimeZone());
-		
-		String datestring = "2011-02-18 05:00:00.0";
-	    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//take a look at MM
-	    Date date = dt.parse(datestring );
-		Instant instant = Instant.ofEpochMilli(date.getTime());
-	    LocalTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
-	    LocalDateTime rDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-	    System.out.println(rDateTime);
-	    LocalDateTime testldtTime = LocalDateTime.of(2011, Calendar.FEBRUARY, 18, 05, 00);
-	    System.out.println(testldtTime);
+	public static OffsetDateTime FromCalendarToOffsetDateTime(Calendar c) {
+		ZoneOffset zoneOffSet = ZoneOffset.of("+02:00");
+		LocalDateTime ltdTime = FromCalendaeDatetoLocalDateTime(c);
+		OffsetDateTime offsetDateTime = OffsetDateTime.of(ltdTime, zoneOffSet);
+		return offsetDateTime;
 	}
+
 }

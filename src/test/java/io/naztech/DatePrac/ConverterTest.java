@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -52,27 +54,27 @@ public class ConverterTest {
 		assertEquals(date, dtDate);
 
 	}
-	
-	@Test 
+
+	@Test
 	public void FromDateToLocalTimeTest() throws ParseException {
 		String datestring = "2011-02-18 05:00:00.0";
-	    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//take a look at MM
-	    Date date = dt.parse(datestring);
-	    
-	    LocalTime localTime = Converter.FromDateToLocalTime(date);
-	    LocalTime testlTime = LocalTime.of(05, 00);
-	    assertEquals(localTime, testlTime);
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");// take a look at MM
+		Date date = dt.parse(datestring);
+
+		LocalTime localTime = Converter.FromDateToLocalTime(date);
+		LocalTime testlTime = LocalTime.of(05, 00);
+		assertEquals(localTime, testlTime);
 	}
-	
-	@Test 
+
+	@Test
 	public void FromDateToLocalDateTimeTest() throws ParseException {
 		String datestring = "2011-02-18 05:00:00.0";
-	    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//take a look at MM
-	    Date date = dt.parse(datestring);
-	    
-	    LocalDateTime localDateTime = Converter.FromDateToLocalDateTime(date);
-	    LocalDateTime testldtTime = LocalDateTime.of(2011, Calendar.MARCH, 18, 05, 00);
-	    assertEquals(localDateTime, testldtTime);
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");// take a look at MM
+		Date date = dt.parse(datestring);
+
+		LocalDateTime localDateTime = Converter.FromDateToLocalDateTime(date);
+		LocalDateTime testldtTime = LocalDateTime.of(2011, Calendar.MARCH, 18, 05, 00);
+		assertEquals(localDateTime, testldtTime);
 	}
 
 	@Test
@@ -86,21 +88,6 @@ public class ConverterTest {
 		assertEquals(d1.getYear(), Converter.FromCalendaeDatetoLocalDateTime(cal).getYear());
 		assertEquals(d1.getMonth(), Converter.FromCalendaeDatetoLocalDateTime(cal).getMonth());
 		assertEquals(d1.getDayOfMonth(), Converter.FromCalendaeDatetoLocalDateTime(cal).getDayOfMonth());
-	}
-
-	@Test
-	public void FromDateToCalendarDateTest() throws ParseException {
-		Date date = new Date();
-		Calendar cal = Converter.fromDateToCalendarDate(date);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
-		sdf.format(cal.getTime());
-
-		String stringDate = "2019 Jan 16 15:06:49";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
-		formatter.parse(stringDate);
-
-		assertEquals(sdf, formatter);
-
 	}
 
 	@Test
@@ -150,18 +137,41 @@ public class ConverterTest {
 		Calendar cl = Calendar.getInstance();
 		// cl.setTimeZone(TimeZone.getTimeZone("UTC"));
 		TimeZone tz = Converter.FromCalendarToTimezone(cl);
+
 		assertEquals(tz, TimeZone.getTimeZone("Asia/Dhaka"));
 	}
-	
+
 	@Test
 	public void fromCalendarToZonedTimeTest() {
 		Calendar cl = Calendar.getInstance();
 		cl.set(2019, Calendar.FEBRUARY, 17, 14, 30);
 		ZonedDateTime zdtDateTime = Converter.fromCalendarToZonedTime(cl);
-		
+
 		LocalDateTime ldt = LocalDateTime.of(2019, Calendar.FEBRUARY, 17, 14, 30);
 		ZonedDateTime klDateTime = ldt.atZone(ZoneId.of("Asia/Tokyo"));
+
 		assertEquals(zdtDateTime.getZone(), klDateTime.getZone());
+		assertEquals(zdtDateTime.getHour(), klDateTime.getHour());
+		assertEquals(zdtDateTime.getMinute(), klDateTime.getMinute());
+		assertEquals(zdtDateTime.getYear(), klDateTime.getYear());
+		assertEquals(zdtDateTime.getDayOfMonth(), klDateTime.getDayOfMonth());
+	}
+
+	@Test
+	public void FromCalendarToOffsetDateTimeTest() {
+		Calendar cl = Calendar.getInstance();
+		cl.set(2019, Calendar.FEBRUARY, 17, 14, 30, 00);
+
+		OffsetDateTime offsetDateTime = Converter.FromCalendarToOffsetDateTime(cl);
+
+		ZoneOffset zoneOffSet = ZoneOffset.of("+02:00");
+		OffsetDateTime odt = OffsetDateTime.of(2019, Calendar.FEBRUARY, 17, 14, 30, 00, 00, zoneOffSet);
+
+		assertEquals(offsetDateTime.getHour(), odt.getHour());
+		assertEquals(offsetDateTime.getMinute(), odt.getMinute());
+		assertEquals(offsetDateTime.getYear(), odt.getYear());
+		assertEquals(offsetDateTime.getSecond(), odt.getSecond());
+		assertEquals(offsetDateTime.getOffset(), odt.getOffset());
 	}
 
 }

@@ -52,18 +52,40 @@ public class ConverterTest {
 		assertEquals(date, dtDate);
 
 	}
+	
+	@Test 
+	public void FromDateToLocalTimeTest() throws ParseException {
+		String datestring = "2011-02-18 05:00:00.0";
+	    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//take a look at MM
+	    Date date = dt.parse(datestring);
+	    
+	    LocalTime localTime = Converter.FromDateToLocalTime(date);
+	    LocalTime testlTime = LocalTime.of(05, 00);
+	    assertEquals(localTime, testlTime);
+	}
+	
+	@Test 
+	public void FromDateToLocalDateTimeTest() throws ParseException {
+		String datestring = "2011-02-18 05:00:00.0";
+	    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//take a look at MM
+	    Date date = dt.parse(datestring);
+	    
+	    LocalDateTime localDateTime = Converter.FromDateToLocalDateTime(date);
+	    LocalDateTime testldtTime = LocalDateTime.of(2011, Calendar.MARCH, 18, 05, 00);
+	    assertEquals(localDateTime, testldtTime);
+	}
 
 	@Test
-	public void FromDatetoLocalDateTimeTest() {
+	public void FromCalenderDatetoLocalDateTimeTest() {
 		Calendar cal = Calendar.getInstance();
 
 		LocalDateTime d1 = LocalDateTime.now();
 
-		assertEquals(d1.getHour(), Converter.FromDatetoLocalDateTime(cal).getHour());
-		assertEquals(d1.getMinute(), Converter.FromDatetoLocalDateTime(cal).getMinute());
-		assertEquals(d1.getYear(), Converter.FromDatetoLocalDateTime(cal).getYear());
-		assertEquals(d1.getMonth(), Converter.FromDatetoLocalDateTime(cal).getMonth());
-		assertEquals(d1.getDayOfMonth(), Converter.FromDatetoLocalDateTime(cal).getDayOfMonth());
+		assertEquals(d1.getHour(), Converter.FromCalendaeDatetoLocalDateTime(cal).getHour());
+		assertEquals(d1.getMinute(), Converter.FromCalendaeDatetoLocalDateTime(cal).getMinute());
+		assertEquals(d1.getYear(), Converter.FromCalendaeDatetoLocalDateTime(cal).getYear());
+		assertEquals(d1.getMonth(), Converter.FromCalendaeDatetoLocalDateTime(cal).getMonth());
+		assertEquals(d1.getDayOfMonth(), Converter.FromCalendaeDatetoLocalDateTime(cal).getDayOfMonth());
 	}
 
 	@Test
@@ -89,7 +111,7 @@ public class ConverterTest {
 		String strDate = sm.format(date);
 		Date dt = sm.parse(strDate);
 
-		String string = "Wed Jan 16 BDT 2019";
+		String string = "Wed Jan 17 BDT 2019";
 		Date dtDate = new SimpleDateFormat("EE MMM dd z yyyy").parse(string);
 
 		assertEquals(dt, dtDate);
@@ -134,8 +156,12 @@ public class ConverterTest {
 	@Test
 	public void fromCalendarToZonedTimeTest() {
 		Calendar cl = Calendar.getInstance();
+		cl.set(2019, Calendar.FEBRUARY, 17, 14, 30);
 		ZonedDateTime zdtDateTime = Converter.fromCalendarToZonedTime(cl);
-		assertEquals(zdtDateTime, ZoneId.of("Asia/Tokyo"));
+		
+		LocalDateTime ldt = LocalDateTime.of(2019, Calendar.FEBRUARY, 17, 14, 30);
+		ZonedDateTime klDateTime = ldt.atZone(ZoneId.of("Asia/Tokyo"));
+		assertEquals(zdtDateTime.getZone(), klDateTime.getZone());
 	}
 
 }

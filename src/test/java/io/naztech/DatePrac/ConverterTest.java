@@ -32,8 +32,6 @@ public class ConverterTest {
 
 	@Test
 	public void FromDateToLocaldateTest() throws ParseException {
-		// Converter converter = new Converter();
-
 		String string = "2019-01-16";
 		Date dtDate = new SimpleDateFormat("yyyy-MM-dd").parse(string);
 		LocalDate date = Converter.FromDateToLocaldate(dtDate);
@@ -46,7 +44,6 @@ public class ConverterTest {
 	@Test
 	public void FromLocaldateToDateTest() throws ParseException {
 		String string = "Wed Jan 16 00:00:00 BDT 2019";
-
 		LocalDate localDate = LocalDate.parse(string, DateTimeFormatter.ofPattern("EE MMM dd hh:mm:ss z yyyy"));
 		Date date = Converter.FromLocaldateToDate(localDate);
 
@@ -174,4 +171,16 @@ public class ConverterTest {
 		assertEquals(offsetDateTime.getOffset(), odt.getOffset());
 	}
 
+	@Test
+	public void fromLocalDateToOffsetDateTimeTest() {
+
+		LocalDate d1 = LocalDate.now();
+		OffsetDateTime o = Converter.fromLocaldateToOffset(d1);
+		OffsetDateTime dateTime = OffsetDateTime.now();
+
+		assertEquals(dateTime.getOffset(), o.getOffset());
+		assertEquals(dateTime.getMinute(), o.getMinute());
+		assertEquals(dateTime.getHour(), o.getHour());
+
+	}
 }

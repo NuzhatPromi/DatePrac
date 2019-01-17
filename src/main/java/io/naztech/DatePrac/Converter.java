@@ -45,43 +45,39 @@ public class Converter {
 
 	// calendar to local date
 	public static LocalDate FromCalendarToLocalDate(Calendar c) {
-		LocalDate ld = LocalDate.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-		return ld;
+		return LocalDate.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
 	}
 
 	/// calendar to local time
 	public static LocalTime FromCalendarToLocalTime(Calendar c) {
-		LocalTime ld = LocalTime.of(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
-		return ld;
+		return LocalTime.of(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
 
 	}
 
 	/// calendar to local datetime
 	public static LocalDateTime FromCalendarToLocalDateTime(Calendar c) {
-		LocalDateTime ld = LocalDateTime.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),
+		return LocalDateTime.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),
 				c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND));
-		return ld;
 
 	}
 
 	// calendar to time zone
 	public static TimeZone FromCalendarToTimezone(Calendar c) {
-		TimeZone tZone = c.getTimeZone();
-		return tZone;
+		return c.getTimeZone();
 	}
 
 	public static ZonedDateTime fromCalendarToZonedTime(Calendar c) {
-		ZoneId zoneid = ZoneId.of("Asia/Tokyo");
-		ZonedDateTime zonedDateTime = ZonedDateTime.of(FromCalendaeDatetoLocalDateTime(c), zoneid);
-		return zonedDateTime;
+		return ZonedDateTime.of(FromCalendaeDatetoLocalDateTime(c), ZoneId.of("Asia/Tokyo"));
 	}
 
 	public static OffsetDateTime FromCalendarToOffsetDateTime(Calendar c) {
-		ZoneOffset zoneOffSet = ZoneOffset.of("+02:00");
-		LocalDateTime ltdTime = FromCalendaeDatetoLocalDateTime(c);
-		OffsetDateTime offsetDateTime = OffsetDateTime.of(ltdTime, zoneOffSet);
-		return offsetDateTime;
+		return OffsetDateTime.of(FromCalendaeDatetoLocalDateTime(c), ZoneOffset.of("+02:00"));
+	}
+
+	public static OffsetDateTime fromLocaldateToOffset(LocalDate localDate)
+	{
+		 return OffsetDateTime.of(LocalDate.now(),LocalTime.now(), ZoneOffset.of("+02:00"));
 	}
 
 }
